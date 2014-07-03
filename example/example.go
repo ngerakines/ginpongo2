@@ -7,9 +7,8 @@ import (
 )
 
 func main() {
-	log.Println("starting")
 	r := gin.Default()
-	r.Use(ginpongo2.Pongo2("./"))
+	r.Use(ginpongo2.Pongo2())
 
 	r.GET("/", func(c *gin.Context) {
 		c.Set("template", "index.html")
@@ -34,6 +33,5 @@ func main() {
 		c.Set("data", nil)
 	})
 
-	e := r.Run(":8080")
-	log.Println("stopping", e)
+	log.Println(r.Run(":8080"))
 }

@@ -3,11 +3,10 @@ package ginpongo2
 import (
 	"github.com/flosch/pongo2"
 	. "github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 )
 
-func Pongo2(templatePath string) HandlerFunc {
+func Pongo2() HandlerFunc {
 	return func(c *Context) {
 		c.Next()
 
