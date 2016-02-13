@@ -15,7 +15,7 @@ func Pongo2() HandlerFunc {
 
 		if templateNameError == nil && isString {
 			templateData, templateDataError := c.Get("data")
-			var template = pongo2.Must(pongo2.FromFile(templateNameValue))
+			var template = pongo2.Must(pongo2.FromCache(templateNameValue))
 			err := template.ExecuteWriter(getContext(templateData, templateDataError), c.Writer)
 			if err != nil {
 				http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
