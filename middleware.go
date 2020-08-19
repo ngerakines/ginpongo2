@@ -11,30 +11,30 @@ func Pongo2() HandlerFunc {
 	return func(c *Context) {
 		c.Next()
 
-		name, err := stringFromContext(c, "template")
-		if err != nil {
-			http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
-		}
-
+		name := stringFromContext(c, "template")
 		data, _ := c.Get("data")
 
+		if name == "" {
+			return
+		}
+
 		template := pongo2.Must(pongo2.FromFile(name))
-		err = template.ExecuteWriter(convertContext(data), c.Writer)
+		err := template.ExecuteWriter(convertContext(data), c.Writer)
 		if err != nil {
 			http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 		}
 	}
 }
 
-func stringFromContext(c *Context, input string) (string, error) {
+func stringFromContext(c *Context, input string) string {
 	raw, ok := c.Get(input)
 	if ok {
 		strVal, ok := raw.(string)
 		if ok {
-			return strVal, nil
+			return strVal
 		}
 	}
-	return "", fmt.Errorf("No data for context variable: %s", input)
+	return ""
 }
 
 func convertContext(thing interface{}) pongo2.Context {
